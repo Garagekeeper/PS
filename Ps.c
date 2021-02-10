@@ -21,22 +21,27 @@ typedef struct str_info{
 struct str_info info_arr[200000];
 
 int compare(const void* a,const void* b){
+    //길이순으로 정렬하고 길이가 같으면 사전순으로
     struct str_info *s1 = (str_info *)a;
     struct str_info *s2 = (str_info *)b;
 
     if(s1->length > s2->length) return 1;
     else if(s1->length < s2->length) return -1;
+    else if(s1->length == s1->length){
+        if(strcmp(s1->str,s2->str) > 0)
+            return 1;
+        if(strcmp(s1->str,s2->str) < 0)
+            return -1;
+    }
     return 0;
 }
 
 void sort(int n){
-    qsort(info_arr,n,sizeof(str_info),compare); //1차 정렬(길이 오름차순)
-
-    for(int i=0;i<n-1;i++){
-        
-    }
-
+    //정렬
+    qsort(info_arr,n,sizeof(str_info),compare);
     for(int i=0;i<n;i++){
+        if(info_arr[i].length == 0)
+            continue;
         printf("%s\n",info_arr[i].str);
     }
 }
@@ -46,14 +51,13 @@ int check(char* str,int n){
         if(strcmp(info_arr[i].str,str)==0 && info_arr[i].length == strlen(str))
             return 1;
     }   
-
     return 0;
 }
 
 int main(){
-    
     int n;
     char temp[51];
+    
     scanf("%d",&n);
     for(int i=0;i<n;i++){
         scanf("%s",temp);
@@ -61,7 +65,6 @@ int main(){
             continue;
         strcpy(info_arr[i].str,temp);
         info_arr[i].length = strlen(temp); 
-
     }
     sort(n);
 
