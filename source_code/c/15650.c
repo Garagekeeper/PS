@@ -43,3 +43,73 @@ int main(){
     back_tracking(n,m,0,0);
     return 0;
 }
+
+
+/*
+visit[1] = 1
+arr[0] = 1
+                        back_tracking(4,2,1,1)
+                        2 != 1
+                        i=2
+                        visit[2] = 1
+                        arr[1]=2
+                                                back_tracking(4,2,2,2)
+                                                2 == 2
+                                                arr[0] arr[1] (1 2)
+                        visit[2] = 0
+
+                        i=3
+                        visit[3] = 1
+                        arr[1] = 3
+                                                back_tracking(4,2,2,2)
+                                                 2 == 2
+                                                arr[0] arr[1] (1 3)
+
+                        visit[3]=0
+
+                        i=4
+                        visit[4]=1
+                        arr[1] = 4
+                                                back_tracking(4,2,2,2)
+                                                 2 == 2
+                                                arr[0] arr[1] (1 4)
+
+                        visit[4]=0
+
+visit[1] = 0
+
+i=2
+visit[2] = 1
+arr[0] = 2
+                        back_tracking(4,2,1,2)
+                        2 != 1
+                        i=3
+                        visit[3]=1
+                        arr[1]=3
+                                                back_tracking(4,2,2,3)
+                                                2 == 2
+                                                arr[0] arr[1] (2,3)
+                        visit[3]=0
+
+                        i=4
+                        visit[4]=1
+                        arr[1]=4
+                                                back_tracking(4,2,2,3)
+                                                2==2
+                                                arr[0] arr[1] (2,4)
+                        visit[4] = 0;
+
+visit[2]=0
+i=3
+visit[3]=1
+arr[0]=3
+                        back_tracking(4,2,1,3)
+                        2 != 1
+                        i=4
+                        visit[4] = 1
+                        arr[1] = 4
+                                                back_tracking(4,2,1,4)
+                                                arr[0] arr[1] (3,4)
+                        visit[4] = 0
+visit[3] = 0
+*/
