@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 
-int abc[51][51][51];
+int abc[21][21][21];
 
 int w(int a, int b, int c) {
   if (a <= 0 || b <= 0 || c <= 0) {
@@ -17,9 +17,9 @@ int w(int a, int b, int c) {
 int main() {
   int a, b, c;
 
-  for (int i = 0; i < 51; i++) {
-    for (int j = 0; j < 51; j++) {
-      for (int k = 0; k < 51; k++) {
+  for (int i = 0; i < 21; i++) {
+    for (int j = 0; j < 21; j++) {
+      for (int k = 0; k < 21; k++) {
         if (i == 0 || j == 0 || k == 0) {
           abc[i][j][k] = 1;
         } else if (i < j && j < k) {
