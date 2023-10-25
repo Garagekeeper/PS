@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-#define MAX 2001
 using namespace std;
 
 struct cmp {
@@ -18,9 +17,9 @@ int main() {
   cin.tie(NULL);
   cout.tie(NULL);
 
-  long long start, end;
-
+  int start, end;
   int n;
+    
   cin >> n;
   while (n--) {
     cin >> start >> end;
@@ -35,13 +34,8 @@ int main() {
       cnt++;
       temp = pq.top().second;
     }
-    // printf("befor_second:%d current:%d\n", temp, pq.top().first);
     pq.pop();
   }
 
   cout << cnt;
 }
-/*
-3 5
-5 7
-*/
