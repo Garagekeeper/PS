@@ -2,7 +2,6 @@
 #define MAX 1001
 using namespace std;
 
-priority_queue<int, vector<int>, greater<int>> pq;
 stack<int> st;
 stack<int> st2;
 vector<int> vec;
