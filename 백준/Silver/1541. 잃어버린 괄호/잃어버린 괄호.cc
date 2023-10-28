@@ -1,17 +1,6 @@
 #include <bits/stdc++.h>
 #define MAX 1001
-
-int arr[50];
 using namespace std;
-
-struct cmp {
-  bool operator()(pair<int, int> a, pair<int, int> b) {
-    if (a.second == b.second) {
-      return a.first > b.first;
-    }
-    return a.second > b.second;
-  }
-};
 
 priority_queue<int, vector<int>, greater<int>> pq;
 stack<int> st;
@@ -28,7 +17,7 @@ int main() {
   cin >> s;
   s += 'e';
   int res;
-  int index = 0;
+  
   for (int i = 0; i < s.size(); i++) {
     if ('0' <= s[i] && s[i] <= '9') {
       s2 += s[i];
@@ -38,11 +27,11 @@ int main() {
       } else if (s[i] == '+') {
         st2.push(1);
       }
-      int temp = stoi(s2);
-      st.push(temp);
+      st.push(stoi(s2));
       s2 = "";
     }
   }
+
   bool flag = true;
   res       = st.top();
   st.pop();
@@ -50,13 +39,9 @@ int main() {
     if (st2.top() == 0) {
       if (flag) {
         flag = false;
-        vec.push_back(-1 * res);
-        res = st.top();
-      } else {
-        vec.push_back(-1 * res);
-        res = st.top();
       }
-
+      vec.push_back(-1 * res);
+      res = st.top();
     } else {
       flag = true;
       res += st.top();
@@ -69,5 +54,3 @@ int main() {
   }
   cout << res;
 }
-// 55 -50 40 -30 20
-// 1 -2 -3 4 -5
