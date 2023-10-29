@@ -2,9 +2,9 @@
 #define MAX 100001
 using namespace std;
 
-int dist[MAX];
-int city[MAX];
-int city_minimun[MAX];
+long long dist[MAX];
+long long city[MAX];
+long long city_minimun[MAX];
 
 int main() {
   ios::sync_with_stdio(false);
