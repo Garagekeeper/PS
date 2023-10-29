@@ -25,7 +25,7 @@ int main() {
 
   city_minimun[1] = city[1];
   for (int i = 2; i <= n; i++) {
-    city_minimun[i] = min(city[i], city[i - 1]);
+    city_minimun[i] = min(city[i], city_minimun[i - 1]);
   }
 
   for (int i = 1; i < n; i++) {
