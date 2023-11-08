@@ -9,20 +9,17 @@ long long max_len = 0;
 long long bi_search(long long left, long long right) {
   int cnt = 0;
   long long mid;
-  long long res = 0;
+  int res = 0;
 
   while (left <= right) {
     mid = (left + right) / 2;
     cnt = 0;
     for (int i = 0; i < k; i++) {
-      if (number[i] == mid)
-        cnt++;
-      else
         cnt += number[i] / mid;
     }
 
     if (cnt >= n) {
-      res  = max(res, mid);
+      res  = max(res, (int)mid);
       left = mid + 1;
 
     } else {
@@ -45,5 +42,3 @@ int main() {
 
   cout << bi_search(1, max_len);
 }
-// 1 2 3 4 5 6
-// 1 2
