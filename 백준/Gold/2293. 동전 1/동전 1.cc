@@ -6,7 +6,6 @@ int weight[101];
 int dp[MAX];
 int n, k;
 
-// dp[x][y]: x까지의 추들을 사용해서 y를 만드는 경우의 수?
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(NULL);
@@ -18,40 +17,17 @@ int main() {
     int temp;
     cin >> temp;
     if (temp > MAX - 1) {
-      n--;
-      i--;
+      n--; i--;
       continue;
     }
     weight[i] = temp;
   }
-
-  for (int j = 1; j <= k; j++) {
-    dp[j] += j % weight[0] == 0 ? 1 : 0;
-  }
-
-  // for (int j = 1; j <= k; j++) {
-  //   printf("%2d ", dp[j]);
-  // }
-  // printf("\n");
-
-  for (int i = 1; i < n; i++) {
+  //i번째 추까지 사용해서 만들 수 있는 j의 개수
+  for (int i = 0; i < n; i++) {
     for (int j = 1; j <= k; j++) {
-      if (j == weight[i]) {
-        dp[j]++;
-      }
-      if(j-weight[i] < 1) continue;
-      dp[j] += dp[j - weight[i]];
+      if (j == weight[i]) dp[j]++;
+      dp[j] += j - weight[i] > 0 ? dp[j - weight[i]] : 0;
     }
-    // for (int j = 1; j <= k; j++) {
-    //   printf("%2d ", dp[j]);
-    // }
-    // printf("\n");
   }
-
-  // for (int j = 1; j <= k; j++) {
-  //   printf("%2d ", dp[j]);
-  // }
-  // printf("\n");
-
-  printf("%d", dp[k]);
+  cout << dp[k];
 }
