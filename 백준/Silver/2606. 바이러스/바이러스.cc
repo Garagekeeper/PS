@@ -38,7 +38,7 @@ int main()
 		G[v].push_back(u);
 	}
 
-	bfs(R);
+	dfs(R);
 
 	int infested=0;
 	for (int i = 2; i <= N; i++)
