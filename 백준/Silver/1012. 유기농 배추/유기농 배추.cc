@@ -7,7 +7,7 @@ using namespace std;
 
 #define MAX 50
 
-int map[MAX][MAX];
+int map[MAX][MAX] = {0, };
 int move_vector[4][2] = {
 	{0,1}, //Right
 	{0,-1},//Left
@@ -18,11 +18,7 @@ int move_vector[4][2] = {
 vector<int> res;
 
 int T, N, M, K;
-
-//void dfs(int R);
 void bfs(int x, int y);
-
-vector<vector<int>> G;
 bool visited[MAX][MAX] = { false, };
 int cnt = 0;
 
@@ -45,32 +41,26 @@ int main()
 			for (int j = 0; j < N; j++)
 			{
 				if (map[i][j] == 1 && visited[i][j] == false)
-				{
 					bfs(i, j);
-				}
 			}
 		}
 
 		for (int i = 0; i < M; i++)
 		{
-			memset(map, 0, sizeof(map));
-			memset(visited, 0, sizeof(visited));
+			memset(map[i], 0, sizeof(int) * N);
+			memset(visited[i], 0, sizeof(bool) * N);
 		}
-
 		cout << cnt << "\n";
-
 		cnt = 0;
 	}
-
 	return 0;
 }
 
 void bfs(int x, int y)
 {
-
+    if (visited[x][y]) return;
+    
 	queue<pair<int, int>> Q;
-	if (visited[x][y]) return;
-
 	visited[x][y] = true;
 
 	for (int i = 0; i < 4; i++)
@@ -87,7 +77,6 @@ void bfs(int x, int y)
 		visited[mx][my] = true;
 	}
 
-
 	while (!Q.empty())
 	{
 		int qx = Q.front().first;
@@ -103,6 +92,7 @@ void bfs(int x, int y)
 			if (mx >= M || my >= N) continue;
 			if (visited[mx][my]) continue;
 			if (map[mx][my] != 1) continue;
+            
 			visited[mx][my] = true;
 			Q.push(make_pair(mx, my));
 		}
