@@ -53,11 +53,8 @@ int main()
 
 		for (int i = 0; i < M; i++)
 		{
-			for (int j = 0; j < N; j++)
-            {
-               map[i][j] = 0;
-               visited[i][j] = false;
-            }
+			memset(map, 0, sizeof(map));
+			memset(visited, 0, sizeof(visited));
 		}
 
 		cout << cnt << "\n";
