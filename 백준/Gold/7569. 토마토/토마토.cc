@@ -13,8 +13,15 @@ int destx, desty;
 
 int map[MAX][MAX][MAX] = { 0, };
 bool visited[MAX][MAX][MAX] = { 0, };
-queue<tuple<int, int, int>> q;
 
+struct Pos
+{
+	int z;
+	int x;
+	int y;
+};
+
+queue<Pos> q;
 void GetInput()
 {
 	cin >> M >> N >> H;
@@ -31,7 +38,7 @@ void GetInput()
 				if (temp == 1)
 				{
 					visited[i][j][k] = true;
-					q.push(make_tuple(i, j, k));
+					q.push({ i,j,k });
 				}
 			}
 		}
@@ -56,11 +63,10 @@ void BFS()
 
 	while (!q.empty())
 	{
-		int frtX = get<1>(q.front());
-		int frtY = get<2>(q.front());
-		int frtZ = get<0>(q.front());
+		int frtX = q.front().x;
+		int frtY = q.front().y;
+		int frtZ = q.front().z;
 		q.pop();
-
 
 		for (int i = 0; i < 6; i++)
 		{
@@ -72,7 +78,8 @@ void BFS()
 			{
 				visited[nz][nx][ny] = true;
 				map[nz][nx][ny] = map[frtZ][frtX][frtY] + 1;
-				q.push(make_tuple(nz, nx, ny));
+
+				q.push({ nz,nx,ny });
 			}
 		}
 	}
@@ -93,7 +100,6 @@ void PrintAns()
 					printf("-1\n");
 					return;
 				}
-
 				cnt = max(cnt, map[i][j][k]);
 			}
 		}
@@ -103,7 +109,6 @@ void PrintAns()
 
 int main()
 {
-
 	GetInput();
 	BFS();
 	PrintAns();
