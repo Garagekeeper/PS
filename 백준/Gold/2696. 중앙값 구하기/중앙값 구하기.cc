@@ -1,63 +1,51 @@
 #include <iostream>
 #include <queue>
-using namespace std;
 
-int main()
+int main(void)
 {
-    ios_base :: sync_with_stdio(false); 
-    cin.tie(NULL); 
-    cout.tie(NULL);
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(0); std::cout.tie(0);
 
-    priority_queue<int> pq;
-    queue<int> tempQueue;
+    int T; std::cin >> T;
+    while ( T-- ) {
 
-    int T;
-    int M;
+        int N; std::cin >> N;
+        std::priority_queue<int, std::vector<int>, std::less<int>> maxHeap;
+        std::priority_queue<int, std::vector<int>, std::greater<int>> minHeap;
 
-    cin >> T;
+        int MIDDLE; std::cin >> MIDDLE;
+        maxHeap.push(MIDDLE); N >>= 1;
 
-    int inputInt;
-    int outputCount;
 
-    for (int i=0; i < T; i++)
-    {
-        cin>>M;
-        outputCount = M % 2 == 0 ? M / 2 : (M / 2) + 1;
-        cout << outputCount << endl;
-        pq = priority_queue<int>();
-        int outCnt = 1;
-        for (int j = 1; j <= M; j++)
-        {
-            cin >> inputInt;
-            pq.push(inputInt);
+        std::cout << N+1 << '\n';
+        std::cout << MIDDLE << ' ';
 
-            if (j % 2 == 1)
-            {
-                for (int k = 0; k < j/2 ; k++)
-                {
-                    tempQueue.push(pq.top());
-                    pq.pop();
-                    // cout << "k: " << k <<endl;
-                    // cout << "j: " << j <<endl;
-                    // cout << "j/2: " << j/2 <<endl;
-                }
+        for (int iter=1; iter<=N; iter++) {
+            int A, B; std::cin >> A >> B;
 
-                cout << pq.top() << " ";
-                outCnt++;
+            int bigger = 0;
+            if ( A > MIDDLE ) { minHeap.push(A); bigger++; }
+            else { maxHeap.push(A); }
 
-                if ( outCnt > 10 )
-                {
-                    outCnt = 1;    
-                    cout << endl;
-                } 
+            if ( B > MIDDLE ) { minHeap.push(B); bigger++; }
+            else { maxHeap.push(B); }
 
-                while(!tempQueue.empty())
-                {
-                    pq.push(tempQueue.front());
-                    tempQueue.pop();
-                }
+
+
+            if ( bigger == 0 ) {
+                minHeap.push(maxHeap.top());
+                maxHeap.pop();
             }
+            else if ( bigger == 2 ) {
+                maxHeap.push(minHeap.top());
+                minHeap.pop();
+            }
+
+            MIDDLE = maxHeap.top();
+            std::cout << MIDDLE << ' ';
         }
+        std::cout << '\n';
     }
+
     return 0;
 }
