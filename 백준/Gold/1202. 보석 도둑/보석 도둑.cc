@@ -1,47 +1,95 @@
 #include <iostream>
-#include <vector>
 #include <queue>
 #include <algorithm>
-
-#define MAX 300001
+#include <set>
 using namespace std;
 
-int N; // 보석 수
-int K; // 가방수
+/*
+    When true is returned 
+    it means the order is NOT correct and swapping of elements takes place.
 
+    if (a > b) return true or return a > b
+    -> a > b 인 상태가 swap이 필요한 상태. (오름차순)
+*/
 
-pair<int, int> v_jewerly[MAX];
-int v_bag[MAX];
-priority_queue<int, vector<int>, less<int>> pq;
+struct Jewel
+{
+public:
+    Jewel(){}
+    Jewel(int m, int v) : mass(m), value(v) { }    
 
+    int mass;
+    int value;
+};
 
-long long solve() {
-    sort(v_jewerly, v_jewerly+N);
-    sort(v_bag, v_bag+K);
-
-    int idx = 0;
-    long long sum = 0;
-
-    for (int i = 0; i < K; i++) {
-        while (idx < N && v_bag[i] >= v_jewerly[idx].first) {
-            pq.push(v_jewerly[idx].second);
-            idx++;
+struct Compare
+{
+    bool operator()(Jewel a, Jewel b) 
+    {
+        if (a.value < b.value)
+            return true;
+        else if (a.value == b.value)
+        {
+            if (a.mass > b.mass)
+            return true;
         }
-        if (!pq.empty()) {
-            sum += pq.top();
-            pq.pop();
-        }
+
+        return false;
     }
-    return sum;
-}
+};
 
-int main() {
+
+int main()
+{
+    ios_base :: sync_with_stdio(false); 
+    cin.tie(NULL); 
+    cout.tie(NULL);
+
+    priority_queue<Jewel , vector<Jewel>, Compare> pq;
+    //priority_queue<Jewel , vector<Jewel>, greater<int>> pq;
+    multiset<int> sackVec;
+    
+    int N,K;
+    int M,V;
+    int MAX;
+
     cin >> N >> K;
-    for (int i = 0; i < N; ++i) {
-        cin >> v_jewerly[i].first >> v_jewerly[i].second;
+
+    while (N--)
+    {
+        cin >> M >> V;
+        pq.push(Jewel(M,V));
     }
-    for (int i = 0; i < K; ++i) {
-        cin >> v_bag[i];
+
+    while (K--)
+    {
+        int C;
+        cin >> C;
+        MAX = max(C,MAX);
+        sackVec.insert(C);
     }
-    cout << solve();
+
+    long long maxValue = 0;
+    //sort(sackVec.begin(), sackVec.end());
+
+    while (!pq.empty())
+    {
+        Jewel top = pq.top();
+        pq.pop();
+        if (top.mass > MAX) continue;
+        if (sackVec.empty()) break;
+        for (int i = 0; i < sackVec.size(); i++)
+        {
+            auto it = sackVec.lower_bound(top.mass);
+            if (it != sackVec.end())
+            {
+                maxValue += top.value;
+                sackVec.erase(it);
+                break;
+            }
+        }
+    }
+
+    cout << maxValue;
+    return 0;
 }
