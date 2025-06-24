@@ -30,5 +30,6 @@ vector<int> solution(int N, vector<int> stages) {
     {
         answer.push_back(e.second);
     }
+    
     return answer;
 }
