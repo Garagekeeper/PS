@@ -11,7 +11,6 @@ int solution(string s) {
     for (int i = 0; i < s.size(); i++)
     {
         int pushcnt = 0;
-        int popcnt = 0;
         for (int j=0; j < s.size(); j++)
         {
             int index = (i + j) % s.size();
@@ -36,11 +35,10 @@ int solution(string s) {
                 {
                 if (leftOpen.top() == '[') leftOpen.pop();
                 }
-                
-                popcnt++;
+
             }
         }
-        if (leftOpen.empty() && (pushcnt == popcnt) && pushcnt != 0) answer++;
+        if (leftOpen.empty() && pushcnt!=0) answer++;
         while (!leftOpen.empty()) leftOpen.pop();
     }
     answer++;
