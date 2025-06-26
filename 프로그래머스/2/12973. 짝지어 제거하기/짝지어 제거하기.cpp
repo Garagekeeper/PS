@@ -9,12 +9,15 @@ int solution(string s)
     stack<char> st;
     int answer = -1;
     
-    st.push(s[0]);
-    for (int i=1; i < s.size(); i++)
+    for (int i=0; i < s.size(); i++)
     {
-        if (st.empty()) 
+        if (st.empty())
+        {
             st.push(s[i]);
-        else if (st.top() == s[i])
+            continue;
+        }
+
+        if (st.top() == s[i])
         {
             st.pop();
         }
@@ -28,14 +31,3 @@ int solution(string s)
 
     return answer;
 }
-
-/*
-bababaababab
-bababa
-bababaa
-bababb
-babaa
-babb
-baa
-bb
-*/
