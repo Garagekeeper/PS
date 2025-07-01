@@ -41,19 +41,6 @@ int solution(vector<vector<int>> board, vector<int> moves) {
             }
         }
         
-        stack<int> temp;
-        while (!crane.empty())
-        {
-            temp.push(crane.top());
-            crane.pop();
-        }
-        
-        while (!temp.empty())
-        {
-            
-            crane.push(temp.top());
-            temp.pop();
-        }
     }
     return answer;
 }
