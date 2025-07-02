@@ -1,38 +1,40 @@
 #include <string>
 #include <vector>
+#include <queue>
+#include <iostream>
 
 using namespace std;
 
 vector<int> solution(vector<int> progresses, vector<int> speeds) {
     vector<int> answer;
-    vector<int> days;
-    for(int i=0;i<progresses.size();i++)
+    queue<int> dayQueue;
+    for (int i=0; i<progresses.size(); i++)
     {
-        int day=0;
-        while(progresses[i]<100)
-        {
-            progresses[i]+=speeds[i];
-            day++;
-        }
-        days.push_back(day);
+        int Todo = 100 - progresses[i];
+        int requiredDay = ( Todo / speeds [i]) + (Todo % speeds[i] != 0 ? 1 : 0);
+        
+        dayQueue.push(requiredDay);
     }
     
-    int cnt=0;
-    int maxDay=0;
-    for(int i=0;i<days.size();i++)
+    int count = 0;
+    int front;
+    
+    while(!dayQueue.empty())
     {
-        if(maxDay<days[i])
+        front = dayQueue.front();
+        dayQueue.pop();
+        count = 1;
+        
+        cout << front << endl;
+        while(!dayQueue.empty() && front >= dayQueue.front())
         {
-            if(cnt!=0)
-                answer.push_back(cnt);
-            maxDay=days[i];
-            cnt=1;
+            dayQueue.pop();
+            count++;
         }
-        else
-            cnt++;
+        
+        answer.push_back(count);
     }
-    if(cnt!=0)
-        answer.push_back(cnt);
+    
     
     return answer;
 }
