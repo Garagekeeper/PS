@@ -11,11 +11,11 @@ vector<string> solution(vector<string> record) {
     {
         if ((*it)[0] == 'E' || (*it)[0] == 'C')
         {
-            auto startPos = (*it).find(" ") + 1;
-            auto endPos = (*it).find(" ", startPos);
+            auto startPos = it->find(" ") + 1;
+            auto endPos = it->find(" ", startPos);
             
-            string uid = (*it).substr(startPos, endPos - startPos);
-            string nickName = (*it).substr(endPos + 1);
+            string uid = it->substr(startPos, endPos - startPos);
+            string nickName = it->substr(endPos + 1);
             userInfo[uid] = nickName;
         }
     }
@@ -25,16 +25,16 @@ vector<string> solution(vector<string> record) {
         string res = "";
         if ((*it)[0] == 'E')
         {
-            auto startPos = (*it).find(" ") + 1;
-            auto endPos = (*it).find(" ", startPos);
-            string uid = (*it).substr(startPos, endPos - startPos);
+            auto startPos = it->find(" ") + 1;
+            auto endPos = it->find(" ", startPos);
+            string uid = it->substr(startPos, endPos - startPos);
             res += (userInfo[uid] + "님이 들어왔습니다.");
 
         }
         else if ((*it)[0] == 'L')
         {
-            auto startPos = (*it).find(" ") + 1;
-            string uid = (*it).substr(startPos);
+            auto startPos = it->find(" ") + 1;
+            string uid = it->substr(startPos);
             res += (userInfo[uid] + "님이 나갔습니다.");
         }
         else
