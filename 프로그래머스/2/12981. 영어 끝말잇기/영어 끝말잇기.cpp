@@ -1,19 +1,38 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include <map>
+#include <unordered_set>
+#include <cmath>
 
 using namespace std;
 
-vector<int> solution(int n, vector<string> words) {
- 
-    map<string,int> wordMap;
-    wordMap[words[0]]++;
+vector<int> solution(int n, vector<string> words) 
+{
+    unordered_set<string> pastWords;
     
-    for(int i = 1; i < words.size(); i++) {
-        if(wordMap[words[i]] || words[i].front()!= words[i-1].back())
-            return {(i%n)+1,(i/n)+1};
-        wordMap[words[i]]++;
+    string before = words[0];
+    pastWords.insert(words[0]);
+    
+    int turn = 2;
+    for (int i = 1; i  < words.size(); i++)
+    {
+        int who = (turn % n) == 0 ? (turn % n) + n : (turn % n); 
+        int turnCount = ceil(turn / static_cast<double> (n));    
+        
+        if (before[before.size()-1] != words[i][0])
+        {
+            return {who, turnCount};    
+        }
+        else if (pastWords.find(words[i]) != pastWords.end())
+        {
+            return {who, turnCount};
+        }
+        else
+        {
+            pastWords.insert(words[i]);
+        }
+        turn++;
+        before = words[i];
     }
     
     return {0,0};
