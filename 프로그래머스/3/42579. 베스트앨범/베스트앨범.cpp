@@ -5,12 +5,13 @@
 #include <algorithm>
 using namespace std;
 
-bool cmp2(pair<int, int> a, pair<int, int> b)
+
+bool cmp1(pair<string, int> a, pair<string, int> b)
 {
     return a.second > b.second;
 }
 
-bool cmp1(pair<string, int> a, pair<string, int> b)
+bool cmp2(pair<int, int> a, pair<int, int> b)
 {
     if (a.second == b.second)
         return a.first < b.first;
