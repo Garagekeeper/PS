@@ -7,14 +7,6 @@ using namespace std;
 vector<int> parents;
 vector<int> costsvec;
 
-int CalcCost(int x, int cost)
-{
-    if (parents[x] == x)
-        return cost;
-    else
-        return CalcCost(parents[x], cost + costsvec[x]);
-}
-
 int Find(int x)
 {
     if (parents[x] == x)
