@@ -7,7 +7,6 @@ using namespace std;
 
 int n, m;
 vector<int> parents;
-vector<int> rankVec;
 
 int Find(int x)
 {
@@ -25,21 +24,9 @@ bool DetermineSameSet(int a, int b)
 
 void Union(int a, int b)
 {
-    int A = Find(a);
-    int B = Find(b);
-
-    if (A != B)
+    if (!DetermineSameSet(a,b))
     {
-        if (rankVec[A] <= rankVec[B])
-        {
-            parents[A] = B;
-            rankVec[B] += rankVec[A];
-        }
-        else
-        {
-            parents[B] = A;
-            rankVec[A] += rankVec[B];
-        }
+        parents[Find(b)] = Find(a);
     }
 }
 
@@ -51,12 +38,11 @@ int main()
     cin >> n >> m;
 
     // 초기상태
-    
-    rankVec.resize(n+1,1);
     // 자신의 부모는 자기 자신
-    for (int i = 0; i <= n; ++i)
+    parents.resize(n+1);
+    for (int i = 0; i < parents.size(); ++i)
     {
-        parents.push_back(i);
+        parents[i] = i;
     }
 
     while (m--)
@@ -65,19 +51,11 @@ int main()
         cin >> cmd >> a >> b;
         if (cmd == 0)
         {
-            if (a==b)
-                continue;
             Union(a,b);
         }
         else
         {
-            if (a==b)
-            {
-                 cout << "yes" << "\n";
-                 continue;
-            }
             cout << (DetermineSameSet(a,b) ? "yes" : "no") << "\n";
         }
     }
-
 }
