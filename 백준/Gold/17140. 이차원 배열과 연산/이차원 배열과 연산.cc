@@ -113,7 +113,7 @@ int main()
                     board[2*j + 1][i] = forSort[j].second;
                 }
 
-                for (j = forSort.size() * 2; j < ccindex; j++)
+                for (j = forSort.size() * 2; j < crindex; j++)
                 {
                     board[j][i] = 0;
                 }
