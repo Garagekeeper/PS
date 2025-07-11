@@ -19,6 +19,7 @@ int main()
     cin >> n >> m;
     enterCount.resize(n+1, 0);
     adjMatrix.resize(n+1);
+    visited.resize(n+1, false);
     for (int i=0; i < m ; i++)
     {
         int from, to;
@@ -40,17 +41,17 @@ int main()
     {
         int front = q.front();
         q.pop();
+        if (visited[front]) continue;
         cout << front << ' ';
+        visited[front] = true;
         for (auto& to : adjMatrix[front])
         {
-            enterCount[to]--;
-
-            if (enterCount[to] == 0)
+            if (enterCount[to] == 1)
             {
                 q.push(to);
             }
+            enterCount[to]--;
+
         }
     }
-
-    
 }
