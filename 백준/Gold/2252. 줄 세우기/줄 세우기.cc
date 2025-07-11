@@ -46,12 +46,11 @@ int main()
         visited[front] = true;
         for (auto& to : adjMatrix[front])
         {
-            if (enterCount[to] == 1)
+            enterCount[to]--;
+            if (enterCount[to] == 0)
             {
                 q.push(to);
             }
-            enterCount[to]--;
-
         }
     }
 }
