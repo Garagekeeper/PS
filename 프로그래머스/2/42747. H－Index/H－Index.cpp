@@ -5,17 +5,17 @@
 
 using namespace std;
 
-int solution(vector<int> citations) {
+int solution(vector<int> citations) 
+{
     int answer = 0;
     
     sort(citations.begin(), citations.end());
     
-    for (int i=0; i<citations.size(); i++)
+    for (int i=citations.size() - 1; i>=0; i--)
     {
         int h = citations.size() - i;
         if (h <= citations[i])
-            answer = max(answer , h);
-            
+            answer = h;
     }
     return answer;
 }
