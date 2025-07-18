@@ -1,10 +1,10 @@
 # [level 5] 방의 개수 - 49190 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/49190?language=cpp) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/49190?language=cpp#) 
 
 ### 성능 요약
 
-메모리: 26.7 MB, 시간: 146.35 ms
+메모리: 17.3 MB, 시간: 87.17 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2025년 07월 18일 17:44:11
+2025년 07월 18일 21:17:04
 
 ### 문제 설명
 
