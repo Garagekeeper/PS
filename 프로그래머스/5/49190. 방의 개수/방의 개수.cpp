@@ -2,8 +2,18 @@
 #include <vector>
 #include <set>
 #include <algorithm>
+#include <unordered_map>
 #include <map>
 using namespace std;
+
+struct pair_hash {
+    template <class T1, class T2>
+    std::size_t operator () (std::pair<T1, T2> const &v) const {
+        auto h1 = std::hash<T1>{}(v.first);
+        auto h2 = std::hash<T2>{}(v.second);
+        return h1 ^ h2;
+    }
+};
 
 map<pair<int,int>, vector<bool>> visited;
 int dy[] = {-1,-1,0,1,1,1,0,-1};
