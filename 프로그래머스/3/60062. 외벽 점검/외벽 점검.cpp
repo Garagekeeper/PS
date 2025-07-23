@@ -1,39 +1,76 @@
+#include <string>
 #include <vector>
 #include <algorithm>
+#include <climits>
+#include <unordered_map>
+
 using namespace std;
-
-int solution(int n, vector<int> weak, vector<int> dist) {
-    int answer = dist.size() + 1;  // 최대로 필요한 인원수 + 1 (초기값)
-    int len = weak.size();
-
-    // 원형을 직선처럼 만들기 위해 weak를 두 배로 늘림
-    for (int i = 0; i < len; ++i) {
-        weak.push_back(weak[i] + n);
+unordered_map<long long, int> cache;
+vector<int> gweak;
+vector<int> gdist;
+vector<bool> visited;
+vector<bool> uvisited;
+int N;
+int answer = INT_MAX;
+void dfs(int cnt)
+{
+    if (cnt > answer) return;
+    long long key = 0;
+    for (int i = 0; i < visited.size(); i++) {
+        if (visited[i]) key |= 1LL << (i + 8);
+    }
+    for (int i = 0; i < uvisited.size(); i++) {
+        if (uvisited[i]) key |= 1LL << i;
     }
 
-    sort(dist.begin(), dist.end());  // 순열을 위한 정렬
+    if (cache.count(key) && cache[key] <= cnt) return;
+    cache[key] = cnt;
 
-    do {
-        // weak의 각 지점에서 출발할 수 있음
-        for (int start = 0; start < len; ++start) {
-            int friendIdx = 0;
-            int position = weak[start] + dist[friendIdx];
-
-            for (int i = start; i < start + len; ++i) {
-                if (weak[i] > position) {
-                    ++friendIdx;
-                    if (friendIdx >= dist.size()) break;
-                    position = weak[i] + dist[friendIdx];
+    if (all_of(visited.begin(), visited.end(), [](bool x){return x == true;}))
+    {
+        answer = min(answer, cnt);
+        return;
+    }
+    
+    for (int i = 0; i < gdist.size(); i++)
+    {
+        if (uvisited[i]) continue;
+        uvisited[i] = true;
+        for (int j=0; j<gweak.size(); j++)
+        {
+            if (visited[j]) continue;
+            int start = gweak[j];
+            int goal = start + gdist[i];
+            
+            auto backup = visited;
+            for (int k=0; k<gweak.size(); k++)
+            {
+                int current = gweak[k];
+                if (visited[k]) continue;
+                if (start <= current && current <= goal)
+                {
+                    visited[k] = true;
+                }
+                else if (start <= current + N && current + N  <= goal)
+                {
+                    visited[k] = true;
                 }
             }
-
-            if (friendIdx < answer) {
-                answer = friendIdx + 1;
-            }
+            dfs(cnt + 1);
+            visited = backup;
         }
+        uvisited[i] = false;
+    }
+}
 
-    } while (next_permutation(dist.begin(), dist.end()));
-
-    if (answer > dist.size()) return -1;
-    return answer;
+int solution(int n, vector<int> weak, vector<int> dist) {
+    sort(dist.begin(), dist.end(), greater<>());
+    gweak = weak;
+    gdist = dist;
+    visited.resize(weak.size(), false);
+    uvisited.resize(dist.size(), false);
+    N = n;
+    
+    dfs(0);
+    return answer == INT_MAX ? -1 : answer;
 }
