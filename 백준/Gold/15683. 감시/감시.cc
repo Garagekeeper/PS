@@ -1,13 +1,8 @@
 #include <string>
 #include <vector>
 #include <climits>
-#include <algorithm>
 #include <iostream>
-#include <map>
-
 using namespace std;
-
-
 
 struct CCTV
 {
@@ -51,7 +46,7 @@ int CalcBlindSpot(int index, vector<vector<int>> inboard)
 
                 if (nx < 0 || nx >= N) break;
                 if (ny < 0 || ny >= M) break;
-                if (inboard[nx][ny] == 6){break;}
+                if (inboard[nx][ny] == 6)break;
                 if (inboard[nx][ny] == 0)
                 {
                     inboard[nx][ny] = -1;
@@ -82,15 +77,15 @@ void RotateVec(CCTV& ctv, int cnt)
             int y = ctv.rotVec[j].second;
             if (cnt > 0) 
             {
-            // 시계 방향 90도
-            ctv.rotVec[j].first = y;
-            ctv.rotVec[j].second = -x;
+                // 시계 방향 90도
+                ctv.rotVec[j].first = y;
+                ctv.rotVec[j].second = -x;
             } 
             else 
             {
-            // 반시계 방향 90도
-            ctv.rotVec[j].first = -y;
-            ctv.rotVec[j].second = x;
+                // 반시계 방향 90도
+                ctv.rotVec[j].first = -y;
+                ctv.rotVec[j].second = x;
             }
 
         }
@@ -101,8 +96,7 @@ void dfs(int index)
 {
     if (index == cctvVec.size())
     {
-        vector<vector<int>> tempBoard = board;
-        int res = CalcBlindSpot(index, tempBoard);
+        int res = CalcBlindSpot(index, board);
         answer = min(res, answer);
         return;
     }
