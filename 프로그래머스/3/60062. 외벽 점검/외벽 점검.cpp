@@ -12,7 +12,7 @@ vector<bool> visited;
 vector<bool> uvisited;
 int N;
 int answer = INT_MAX;
-void dfs(int cnt)
+void dfs(int index, int cnt)
 {
     if (cnt > answer) return;
     long long key = 0;
@@ -32,7 +32,7 @@ void dfs(int cnt)
         return;
     }
     
-    for (int i = 0; i < gdist.size(); i++)
+    for (int i = index; i < gdist.size(); i++)
     {
         if (uvisited[i]) continue;
         uvisited[i] = true;
@@ -56,7 +56,7 @@ void dfs(int cnt)
                     visited[k] = true;
                 }
             }
-            dfs(cnt + 1);
+            dfs(i+1, cnt + 1);
             visited = backup;
         }
         uvisited[i] = false;
@@ -71,6 +71,6 @@ int solution(int n, vector<int> weak, vector<int> dist) {
     uvisited.resize(dist.size(), false);
     N = n;
     
-    dfs(0);
+    dfs(0,0);
     return answer == INT_MAX ? -1 : answer;
 }
