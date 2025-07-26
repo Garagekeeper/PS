@@ -12,6 +12,7 @@ vector<bool> visited;
 vector<bool> uvisited;
 int N;
 int answer = INT_MAX;
+//비트마스크를 통한 중복 제거
 void dfs(int index, int cnt)
 {
     if (cnt > answer) return;
