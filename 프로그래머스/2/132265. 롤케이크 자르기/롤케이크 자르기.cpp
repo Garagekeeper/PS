@@ -1,31 +1,30 @@
-#include <iostream>
+#include <string>
 #include <vector>
 #include <unordered_map>
+#include <iostream>
 using namespace std;
 
+unordered_map<int,int> Amap;
+unordered_map<int,int> Bmap;
+
 int solution(vector<int> topping) {
-    unordered_map<int, int> rightCount;
-    unordered_map<int, int> leftCount;
     int answer = 0;
-
-    // 초기에는 모든 토핑이 오른쪽에 있음
-    for (int t : topping) {
-        rightCount[t]++;
+    for (auto& e : topping)
+    {
+        Bmap[e]++;
+        //Bmap.erase(e);
     }
 
-    for (int i = 0; i < topping.size(); ++i) {
-        int t = topping[i];
-        leftCount[t]++;
-        rightCount[t]--;
-
-        if (rightCount[t] == 0) {
-            rightCount.erase(t);
-        }
-
-        if (leftCount.size() == rightCount.size()) {
-            answer++;
-        }
+    for (int i=1; i<=topping.size() - 1; i++)
+    {
+        
+        int currentNum = topping[i-1]; 
+        if (Bmap[currentNum] == 1) Bmap.erase(currentNum);
+        else Bmap[currentNum]--;
+        Amap[currentNum];
+        if (Amap.size() == Bmap.size()) answer++;
+        //cout << Bmap.size() << ", " << Amap.size() << endl;
+        
     }
-
     return answer;
 }
