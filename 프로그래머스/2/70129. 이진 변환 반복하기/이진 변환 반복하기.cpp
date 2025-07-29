@@ -9,18 +9,16 @@ string Deci2bi(int n)
     while(n != 0)
     {
         binary += (n % 2) +'0';
-        n /= 2;
+        n >>= 1;
     }
-    
-    string res = string(binary.rbegin(), binary.rend());
     deci2biCnt++;
-    return res;
+    return  string(binary.rbegin(), binary.rend());
 }
 
 vector<int> solution(string s) 
 {
     vector<int> answer;
-    string currStr = s;
+    string currStr(s);
     int cnt = 0;
     while(true)
     {
