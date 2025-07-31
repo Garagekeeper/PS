@@ -54,7 +54,6 @@ long long SumTree(int node, int left, int right, int tleft, int tright)
 
 int main()
 {
-    
     ios::sync_with_stdio(false);
     cin.tie(NULL);
     cin >> N >> M >> K;
@@ -68,20 +67,15 @@ int main()
     segTreeVec.resize(4*N + 1);
     BuildTree(1, 0, N-1);
 
-
     for (int i=0; i<M+K; i++)
     {
         long long a,b,c;
         cin >> a >> b >> c;
 
         if (a == 1)
-        {
             UpdateTree(b-1, c);
-        }
         else if(a == 2)
-        {
             cout << SumTree(1, 0, N-1, b-1, c-1) << '\n';
-        }
     }
 
     return 0;
