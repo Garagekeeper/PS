@@ -1,109 +1,73 @@
 #include <string>
 #include <vector>
-#include <climits>
-#include <algorithm>
 #include <iostream>
 using namespace std;
 
 // 수의 개수, 변경이 일어나는 횟수, 구간합을 구하는 횟수
 int N,M,K;
 
-struct Node
+vector<long long> seqs;
+vector<long long> segTreeVec;
+
+long long BuildTree(int node, int left, int right)
 {
-    Node();
-    Node(int num) : _num(num),  _data(0){}
-    int _num;
-    long long _data;
-    Node* _left = nullptr;
-    Node* _right = nullptr;
-};
-
-class SegTree
-{
-    public:
-    SegTree();
-    SegTree(vector<long long> seqVec) : _seqVec(seqVec) {}
-
-    void Init();
-    long long MakeTree(Node* node, int left, int right);
-    void Update(int idx, long long num);
-    long long Sum(int leftIndex, int rightIndex);
-
-    private:
-    long long Sum(Node* node, int leftIndex, int rightIndex, int targetLindex, int targetRIndex);
-    void Update(Node* node, int leftIndex, int rightIndex, int targetIndex, long long diff);
-    Node* _root = nullptr;
-    vector<long long> _seqVec;
-};
-
-long long SegTree::Sum(int targetLindex, int targetRIndex)
-{
-    return Sum(_root, 0, _seqVec.size()-1, targetLindex, targetRIndex);
-}
-
-long long SegTree::Sum(Node* node, int leftIndex, int rightIndex, int targetLindex, int targetRIndex)
-{
-    if (targetLindex <= leftIndex && rightIndex <= targetRIndex) return node->_data;
-    if (targetLindex > rightIndex || targetRIndex < leftIndex) return 0;
-    int mid = (leftIndex + rightIndex) / 2;
-
-    return Sum(node->_left, leftIndex, mid, targetLindex, targetRIndex) + Sum(node->_right, mid + 1, rightIndex, targetLindex, targetRIndex);
-}
-
-void  SegTree::Update(int idx, long long num)
-{
-    long long diff = num - _seqVec[idx];
-    _seqVec[idx] = num;
-    Update(_root, 0, _seqVec.size()-1, idx, diff);
-}
-
-void  SegTree::Update(Node* node, int leftIndex, int rightIndex, int targetIndex, long long diff)
-{
-    if (leftIndex > targetIndex || targetIndex > rightIndex) return;
-    if (leftIndex == rightIndex)
+    if (left == right)
     {
-        node->_data += diff;
-        return;
+        segTreeVec[node] = seqs[left];
+        return seqs[left];
     }
-    node->_data += diff;
-    int mid = (leftIndex + rightIndex) / 2;
-    Update(node->_left, leftIndex, mid, targetIndex, diff);
-    Update(node->_right, mid + 1, rightIndex,  targetIndex, diff);
+    int mid = (left + right)/2;
+
+    return segTreeVec[node] = BuildTree(node * 2, left, mid) + BuildTree(node * 2 + 1, mid + 1, right);
 }
 
-long long SegTree::MakeTree(Node* node, int leftIndex, int rightIndex)
+void UpdateTree(int node, int left, int right, int index, long long diff)
 {
-    if (leftIndex == rightIndex) 
+    if (left > index || index > right) return;
+    if (left == right)
     {
-        node->_data = _seqVec[leftIndex];
-        return _seqVec[leftIndex];
+        segTreeVec[node] += diff;
+        return;   
     }
-    int mid = (leftIndex + rightIndex)/2;
-    node->_left = new Node(node->_num * 2);
-    node->_right = new Node(node->_num * 2 + 1);
-    return node->_data = MakeTree(node->_left, leftIndex, mid) + MakeTree(node->_right, mid+1 ,rightIndex);
+
+    segTreeVec[node] += diff;
+    int mid = (left + right) / 2;
+    UpdateTree(node * 2, left, mid, index, diff);
+    UpdateTree(node * 2 + 1, mid + 1, right,  index, diff);
 }
 
-void SegTree::Init()
+void UpdateTree(int index, long long num)
 {
-    _root = new Node(1);
-    MakeTree(_root, 0, _seqVec.size()-1);
+    long long diff = num - seqs[index];
+    seqs[index] = num;
+    UpdateTree(1, 0, N - 1, index, diff);
+}
 
+long long SumTree(int node, int left, int right, int tleft, int tright)
+{
+    if (tleft <= left && right <= tright) return segTreeVec[node];
+    if (tleft > right || tright < left) return 0;
+
+    int mid = (left + right) / 2;
+    return SumTree(node*2, left, mid, tleft, tright) + SumTree(node*2+1, mid + 1, right, tleft, tright);
 }
 
 int main()
 {
-    vector<long long> seqs;
+    
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
     cin >> N >> M >> K;
-    while (N--)
+    for (int i=0; i<N; i++)
     {
         long long num;
         cin >> num;
         seqs.push_back(num);
     }
 
-    SegTree st(seqs);
-    st.Init();
+    segTreeVec.resize(4*N + 1);
+    BuildTree(1, 0, N-1);
+
 
     for (int i=0; i<M+K; i++)
     {
@@ -112,11 +76,11 @@ int main()
 
         if (a == 1)
         {
-            st.Update(b-1,c);
+            UpdateTree(b-1, c);
         }
         else if(a == 2)
         {
-            cout << st.Sum(b-1,c-1) <<'\n';
+            cout << SumTree(1, 0, N-1, b-1, c-1) << '\n';
         }
     }
 
