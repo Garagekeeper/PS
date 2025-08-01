@@ -9,7 +9,6 @@ int N, M;
 vector<int> matchedEmployee;
 vector<bool> jobVisited;
 unordered_map<int, vector<int>> jobGraph;
-int answer = 0;
 
 bool dfs(int employee)
 {
@@ -32,8 +31,9 @@ bool dfs(int employee)
 
 int main()
 {
-    //ios::sync_with_stdio(false);
-    //cin.tie(NULL);
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    int answer = 0;
     cin >> N >> M;
 
     matchedEmployee.resize(M+1);
@@ -51,13 +51,12 @@ int main()
         }
     }
 
-   
-
     for (int i=1; i<=N; i++)
     {
         fill(jobVisited.begin(), jobVisited.end(), false);
         answer +=  dfs(i) ? 1 : 0;
     }
+    
     cout << answer <<'\n';
     return 0;
 }
