@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <unordered_map>
-#include <memory.h>
 
 using namespace std;
 
