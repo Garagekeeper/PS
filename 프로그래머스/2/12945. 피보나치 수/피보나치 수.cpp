@@ -2,19 +2,21 @@
 #include <vector>
 
 using namespace std;
+#define MOD 1234567;
+//const int MOD = 1234567
+vector<int> cache;
+
+int Fibo(int n)
+{
+    if (n <= 2) return 1;
+    if (cache[n] != 0) return cache[n];
+    return cache[n] = (Fibo(n-1) + Fibo(n-2)) % MOD;
+}
 
 int solution(int n) 
 {
-    const int MOD = 1234567;
-    vector<long long> fib(n + 1);
-    
-    fib[0] = 0;
-    fib[1] = 1;
-    
-    for (int i = 2; i <= n; ++i) {
-        fib[i] = (fib[i - 1] + fib[i - 2]) % MOD;
-    }
-    
-    return fib[n];
-
+    int answer = 0;
+    cache.resize(n+1);
+    answer = Fibo(n);
+    return answer;
 }
