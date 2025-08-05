@@ -1,5 +1,7 @@
 #include <string>
 #include <vector>
+#include <algorithm>
+#include <iostream>
 
 using namespace std;
 
@@ -8,8 +10,9 @@ int solution(vector<vector<int>> triangle)
     int answer = 0;
     
     vector<vector<int>> dp = triangle;
+    int row = triangle.size();
     
-    for (int i=1; i<triangle.size(); i++)
+    for (int i=1; i<row; i++)
     {
         for (int j=0; j<triangle[i].size(); j++)
         {
@@ -22,10 +25,7 @@ int solution(vector<vector<int>> triangle)
         }
     }
     
-    for (int i=0; i<dp[triangle.size()-1].size(); i++)
-    {
-        answer = max (dp[triangle.size()-1][i], answer);
-    }
+    answer = *max_element(dp[row-1].begin(), dp[row-1].end());
     
     return answer;
 }
