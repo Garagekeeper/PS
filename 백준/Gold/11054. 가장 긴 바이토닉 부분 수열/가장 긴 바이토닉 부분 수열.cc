@@ -1,39 +1,55 @@
-#include <bits/stdc++.h>
+#include <string>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
 
-#define MOD 1000000000;
+int N;
 
-int dp[10001][2];
-int num[10001];
-int n;
-int max=0;
+int main()
+{
+    cin >> N;
 
-int main() {
-  scanf("%d", &n);
-  for (int i = 1; i <= n; i++) scanf("%d", &num[i]);
-  
-  dp[1][0] = 1;
-  dp[n][1] = 1;
-  for (int i=1; i<=n; i++){
-      dp[i][0] = 1;
-      for (int j=1; j < i; j++){
-        if (num[j] < num[i]){
-          dp[i][0] = dp[i][0] > (dp[j][0] + 1) ? dp[i][0] : (dp[j][0] + 1);
+    vector<int> seq;
+    vector<int> dp1(N,1);
+    vector<int> dp2(N,1);
+
+    for (int i=0; i<N; i++)
+    {
+        int temp;
+        cin >> temp;
+        seq.push_back(temp);
+    }
+
+
+    dp1[0] = 1;
+    dp2[0] = 1;
+    for (int i = 1; i<N; i++)
+    {
+        for (int j = 0; j < i; j++)
+        {
+            if (seq[j] >= seq[i]) continue;
+            dp1[i] = max(dp1[j] + 1, dp1[i]);
         }
-      }
     }
-  for (int i=n; i>=1; i--){
-    dp[i][1] = 1;
-    for (int j=n; j>i; j--){
-      if (num[i] > num[j]){
-        dp[i][1] = dp[i][1] > (dp[j][1] + 1) ? dp[i][1] : (dp[j][1] + 1);
-      }
+
+    seq = vector<int>(seq.rbegin(), seq.rend());
+
+    for (int i = 1; i<N; i++)
+    {
+        for (int j = 0; j < i; j++)
+        {
+            if (seq[j] >= seq[i]) continue;
+            dp2[i] = max(dp2[j] + 1, dp2[i]);
+        }
     }
-  }
 
-  for (int i=1; i<=n; i++){
-    max = max > (dp[i][0] + dp[i][1]) ? max : (dp[i][0] + dp[i][1]);
-  //printf("[%d %d]\n",dp[i][0], dp[i][1]);
-  }
+    dp2 = vector<int>(dp2.rbegin(), dp2.rend());
+    int answer = 0;
+    for (int i=0; i<N; i++)
+    {
+        answer = max({dp1[i] + dp2[i], answer});
+    }
 
-  printf("%d",max-1);
+    cout << answer-1;
 }
