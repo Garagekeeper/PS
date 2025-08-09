@@ -1,62 +1,50 @@
-#include <bits/stdc++.h>
-#define MAX 501
+#include <string>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+#include <map>
+#include <climits>
 using namespace std;
 
-int dp[MAX][MAX];
-int prefix[MAX];
-int matrix[MAX][3];
-int n;
+int N;
+int answer=INT_MAX;
 
-int main() {
-  ios::sync_with_stdio(false);
-  cin.tie(NULL);
-  cout.tie(NULL);
 
-  cin >> n;
-  int temp = 1;
-  for (int i = 1; i <= n; i++) {
-    cin >> matrix[i][1] >> matrix[i][2];
-  }
+int main()
+{
+    cin >> N;
 
-  for (int i = 1; i <= n; i++) {
-    for (int j = 1; j <= n - i; j++) {
-      dp[j][j + i] = INT_MAX;
-      for (int x = j; x < i + j; x++) {
-        dp[j][j + i] = min(dp[j][x] + dp[x + 1][i + j] +
-                               matrix[j][1] * matrix[x][2] * matrix[j + i][2],
-                           dp[j][j + i]);
-      }
+    // 0: row, 1:col
+    vector<pair<int, int>> mats;
+    // dp[i][j] : i to j 까지의 최소 비용
+    vector<vector<int>> dp(N+1, vector<int>(N+1, INT_MAX));
+    mats.push_back({});
+    for (int i=1; i<=N; i++)
+    {
+        int row,col;
+        cin >> row >> col;
+        mats.push_back({row, col});
+        dp[i][i] = 0;
     }
-  }
 
-  // for (int i = 1; i <= n; i++) {
-  //   for (int j = 1; j <= n; j++) {
-  //     printf("%d ", dp[i][j]);
-  //   }
-  //   printf("\n");
-  // }
-  cout << dp[1][n];
+    // 길이가 len인(포함된 원소가 len+1개인) 슬라이딩 윈도우를 이동.
+    // start와 end로 표현하고 이 사이에 원소가 len+1개 있음.
+   
+    for (int len = 1; len < N; len++)
+    {
+        for (int start = 1; start + len <= N; start++)
+        {
+            int end = start + len;
+            // start to end의 최솟값을 계산
+
+            for (int k=start; k < end; k++)
+            {
+                // (start to k) + (k+1 to end) + (start row * k+1 row * end col) 
+                dp[start][end] = min(dp[start][k]+ dp[k+1][end]
+                     + (mats[start].first * mats[k+1].first * mats[end].second), dp[start][end]);
+            }
+        }
+    }
+
+    cout << dp[1][N] << '\n';
 }
-
-// 11 12  12 23
-/*
-11
-dp[1][2] = min(dp[1][2], dp[1][1] + 12)
-*/
-// 21     13    x 1 2   13 = min(13,11 + , 23+x)
-// 31 32
-
-/*
-   1   2    3
- 1 0  30
- 2 0   0   36
- 3 0   0    0
-
-123
-12 3
-1 23
-
-1234
-123 4
-1 234
-*/
