@@ -11,6 +11,9 @@ int K;
 // 거리가 짧은거 끼리 묶자
 int main()
 {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    
     cin >> N;
     cin >> K;
     vector<int> vec;
