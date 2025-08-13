@@ -3,11 +3,10 @@
 
 using namespace std;
 
-vector<int> solution(vector<int> num_list) {
-    vector<int> answer;
+vector<int> solution(vector<int> num_list) 
+{
+    vector<int> answer(num_list.rbegin(), num_list.rend());
     
-    for (auto it = num_list.rbegin(); it != num_list.rend(); ++it)
-        answer.push_back(*it);
     
     return answer;
 }
