@@ -13,66 +13,57 @@ long long solution(int cap, int n, vector<int> deliveries, vector<int> pickups)
     
     for (int i=0; i < deliveries.size(); i++)
     {
-        //if (deliveries[i] != 0) dvec.push_back(i);
-        //if (pickups[i] != 0) pvec.push_back(i);
+        if (deliveries[i] != 0) dvec.push_back(i);
+        if (pickups[i] != 0) pvec.push_back(i);
     }
     
-    int didx = n-1;
-    int pidx = n-1;
-    while ( didx >= 0 || pidx >= 0)
+    int ddidx = dvec.size() - 1;
+    int ppidx = pvec.size() - 1;
+    
+    while (true)
     {
-        //if (!(didx >= 0 && pidx >= 0)) break;
-        
-        //int didx = dvec.back();
-        //int pidx = pvec.back();
-        
-        while (didx >= 0 && deliveries[didx] == 0) didx--;
-        while (pidx >= 0 && pickups[pidx] == 0) pidx--;
-        
-        answer += max(didx+1, pidx+1) * 2;
+        if (ddidx<0 && ppidx<0) break;
+
+        int dist = 0;
+        if (ddidx>=0) dist = max(dist, dvec[ddidx]+1);
+        if (ppidx>=0) dist = max(dist, pvec[ppidx]+1);
+        answer += dist * 2;
         load = cap;
        
         // 배달 처리
-        //if (dvec.empty()) continue;
-        while ( didx >= 0 && load > 0)
+        while (load > 0 && ddidx >=0)
         {
-            if (deliveries[didx] > load) 
+            if (deliveries[dvec[ddidx]] > load) 
             {
-                deliveries[didx] -= load;
+                deliveries[dvec[ddidx]] -= load;
                 load = 0;
             }
             else 
             {
-                load -= deliveries[didx];
-                deliveries[didx] = 0;
-                didx--;
-                //dvec.pop_back();
+                load -= deliveries[dvec[ddidx]];
+                deliveries[dvec[ddidx]] = 0;
+                ddidx--;
             }
             
-            //if (dvec.empty()) break;
-            //didx = dvec.back();
         }
         
         load = 0;
         
         // 수거 처리
-        //if (pvec.empty()) continue;
-        while (load < cap && pidx >= 0)
+        
+        while (load < cap && ppidx >= 0)
         {
-            if (cap - load < pickups[pidx])
+            if (cap - load < pickups[pvec[ppidx]])
             {
-                pickups[pidx] -= cap - load;
+                pickups[pvec[ppidx]] -= cap - load;
                 load = cap;
             }
             else
             {
-                load += pickups[pidx];
-                pickups[pidx] = 0;
-                pidx--;
-                //pvec.pop_back();
+                load += pickups[pvec[ppidx]];
+                pickups[pvec[ppidx]] = 0;
+                ppidx--;
             }
-            //if (pvec.empty()) break;
-            //pidx = pvec.back();
         }
     }
     
