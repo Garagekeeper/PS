@@ -24,10 +24,11 @@ long long solution(int cap, int n, vector<int> deliveries, vector<int> pickups)
     {
         if (ddidx<0 && ppidx<0) break;
 
-        int dist = 0;
-        if (ddidx>=0) dist = max(dist, dvec[ddidx]+1);
-        if (ppidx>=0) dist = max(dist, pvec[ppidx]+1);
-        answer += dist * 2;
+        //int dist = 0;
+        //if (ddidx>=0) dist = max(dist, dvec[ddidx]+1);
+        //if (ppidx>=0) dist = max(dist, pvec[ppidx]+1);
+        answer += max(dvec[ddidx]+1, pvec[ppidx]+1) * 2;
+        //answer += dist * 2;
         load = cap;
        
         // 배달 처리
