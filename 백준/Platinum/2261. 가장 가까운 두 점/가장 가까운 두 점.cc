@@ -13,14 +13,14 @@ int main()
 {
     cin >> N;
     //x,y 순서
-    vector<pair<int,int>> pointsVec;
+    vector<pair<long long, long long>> pointsVec;
 
     //y,x 순서
     set<pair<int,int>> activeSet;
 
     while(N--)
     {
-        int x, y;
+        long long x, y;
         cin >> x >> y;
         pointsVec.push_back({x,y});
     }
