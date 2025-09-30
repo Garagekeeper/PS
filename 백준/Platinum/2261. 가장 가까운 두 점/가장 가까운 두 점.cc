@@ -1,64 +1,72 @@
-#include <iostream>
-#include <algorithm>
+#include <string>
 #include <vector>
-#include <cmath>
+#include <iostream>
 #include <set>
+#include <climits>
+#include <algorithm>
+#include <cmath>
 using namespace std;
 
-#define INF (1 << 30)
-#define X first
-#define Y second
-typedef pair<int, int> pi;
+int N;
 
-int n, x, y;
-vector<pi> v;
-set<pi> s;
-
-int dist(pi a, pi b) 
+int main()
 {
-    int x_dist = (a.X - b.X) * (a.X - b.X);
-    int y_dist = (a.Y - b.Y) * (a.Y - b.Y);
-    return x_dist + y_dist;
-}
+    cin >> N;
+    //x,y 순서
+    vector<pair<int,int>> pointsVec;
 
-int main() {
+    //y,x 순서
+    set<pair<int,int>> activeSet;
 
-    cin >> n;
-
-    for (int i = 0; i < n; ++i)
+    while(N--)
     {
+        int x, y;
         cin >> x >> y;
-        v.push_back({ x,y });
+        pointsVec.push_back({x,y});
     }
 
-    // X좌표 순으로 정렬
-    sort(v.begin(), v.end());
-    s.insert({ v[0].Y, v[0].X });
-    s.insert({ v[1].Y, v[1].X });
+    //x좌표를 기준으로 정렬
+    sort(pointsVec.begin(), pointsVec.end());
+    pointsVec.erase(unique(pointsVec.begin(), pointsVec.end()),pointsVec.end());
 
-    int mini = dist(v[0], v[1]);
-    int idx = 0;
+    activeSet.insert({pointsVec[0].second, pointsVec[0].first});
+    activeSet.insert({pointsVec[1].second, pointsVec[1].first});
 
-    for (int i = 2; i < n; ++i)
+    long long dy = pointsVec[1].second - pointsVec[0].second;
+    long long dx = pointsVec[1].first - pointsVec[0].first;
+    long long d = dy*dy + dx*dx;
+    int left = 0;
+
+    for (int i=2; i<pointsVec.size(); i++)
     {
-        while (idx < i)
+        // 기존에 점들 중에서 최소거리보다 x의 차이가 크면 제외
+        // x의 차이가 유클리드 거리의 차 보다 크면
+        while (left < i)
         {
-            int d = v[i].X - v[idx].X;
-            if (d * d <= mini) break;
-            else // mini보다 거리가 멀 시 후보군에서 제외
+            int dx = pointsVec[i].first - pointsVec[left].first; 
+            if (dx * dx > d)
             {
-                s.erase({ v[idx].Y, v[idx].X });
-                idx++;
+                activeSet.erase({pointsVec[left].second, pointsVec[left].first});
+                left++;
+            }
+            else 
+            {
+                break;
             }
         }
 
-        // 후보군 내의 점들과의 거리 중 가장 가까운 거리로 업데이트
-        auto start = s.lower_bound({ v[i].Y - sqrt(mini), -INF });
-        auto end = s.upper_bound({ v[i].Y + sqrt(mini), INF });
-        for (auto it = start; it != end; it++)
-            mini = min(mini, dist({ it->Y, it->X }, v[i]));
-        s.insert({ v[i].Y, v[i].X });
+        auto lower = activeSet.lower_bound({pointsVec[i].second - sqrt(d) ,-INT_MAX});
+        auto upper = activeSet.upper_bound({pointsVec[i].second + sqrt(d) ,INT_MAX});
+
+        for (auto it = lower; it != upper; it++)
+        {
+            long long dy = it->first - pointsVec[i].second;
+            long long dx = it->second - pointsVec[i].first;
+            d = min(d, dx*dx + dy*dy);
+        }
+        activeSet.insert({pointsVec[i].second,pointsVec[i].first});
     }
-    
-    cout << mini << '\n';
+
+    cout << d;
+
 }
