@@ -7,6 +7,9 @@ int N, T, P;
 
 int main()
 {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+
     cin >> N >> T >> P;
     
     vector<int> problem(T,0);
@@ -14,20 +17,24 @@ int main()
     vector<vector<int>> res(N, vector<int>(3,0));
     vector<int> tem;
 
+    // 입력
     for (int i=0; i<N; i++)
     {
         for (int k=0; k<T; k++)
         {
             int pass;
             
+            // 참가자의 정답 여부
             cin >> pass;
             students[i][k] = pass;
 
+            // 해당 문제의 정답자 수 증가
             if (pass == 1)
                 problem[k]++;
         }
     }
 
+    // 점수 계산
     for (int i=0; i<N; i++)
     {
         for (int k=0; k<T; k++)
@@ -41,6 +48,10 @@ int main()
         }
     }
 
+    // 문제의 조건으로 정렬
+    // 점수 내림차순
+    // 동일시 문제수 내림 차순
+    // 동일시 번호 오름차순
     sort(res.begin(), res.end(), [&](vector<int> a, vector<int> b){
         if (a[0] == b[0])
         {
@@ -51,6 +62,7 @@ int main()
         return a[0] > b[0];
     });
 
+    // P를 찾아서 점수와 등수 출력
     for (int i=0; i<N; i++)
     {
         if (res[i][2] + 1 == P)
