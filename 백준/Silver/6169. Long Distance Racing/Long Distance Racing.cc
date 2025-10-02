@@ -15,7 +15,7 @@ int main()
     int fDis = 2*F;
     int udDis = U + D;
     int ans = 0;
-    int prifix=0;
+    int prefix=0;
 
     for (int i=0; i<T; i++)
     {
@@ -24,17 +24,15 @@ int main()
         
         if (temp == 'f')
         {
-            prifix+=fDis;
+            prefix+=fDis;
         }
         else if (temp == 'u' || temp == 'd')
         {
-            prifix+=udDis;
+            prefix+=udDis;
         }
-        if (M < prifix) break;
+        if (M < prefix) break;
         ans++;
     }
 
     cout << ans;
-
-    
 }
