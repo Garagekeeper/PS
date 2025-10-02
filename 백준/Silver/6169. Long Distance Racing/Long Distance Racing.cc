@@ -21,18 +21,17 @@ int main()
     {
         char temp;
         cin >> temp;
+        
         if (temp == 'f')
         {
             prifix+=fDis;
-            if (M < prifix) break;
-            ans++;
         }
         else if (temp == 'u' || temp == 'd')
         {
             prifix+=udDis;
-            if (M < prifix) break;
-            ans++;
         }
+        if (M < prifix) break;
+        ans++;
     }
 
     cout << ans;
