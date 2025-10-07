@@ -26,9 +26,6 @@ void DrawSierpinskiFractal(vector<string>& canvas, int height, int x, int y)
 
 int main()
 {
-    //ios_base::sync_with_stdio(0);
-    //cin.tie(0);
-
     while(true)
     {
         cin >> N;
