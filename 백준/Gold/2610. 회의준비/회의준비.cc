@@ -4,12 +4,16 @@
 #include <unordered_map>
 #include <map>
 #include <set>
+#include <cmath>
 using namespace std;
-const int INF = 1e8;
-int N, M;
-vector<int> parent;
+
+const int INF = 10e8;
+
 vector<vector<int>> graph;
-map<int, vector<int>> group; 
+vector<int> parent;
+map<int, vector<int>> group;
+
+int N, M;
 
 int Find(int x)
 {
@@ -21,13 +25,11 @@ void Union(int A, int B)
 {
     A = Find(A);
     B = Find(B);
-    if (A == B)
-        return;
-    
-    parent[B] = A;
 
-    
+    if (A == B) return;
+    parent[A] = B;
 }
+
 
 int main()
 {
@@ -35,18 +37,15 @@ int main()
     cin.tie(0);
 
     cin >> N >> M;
-    
-    graph = vector<vector<int>>(N+1, vector<int>(N+1, INF));
-    parent = vector<int>(N+1,0);
-    for (int i=1; i<=N; i++)
-    {
-        parent[i] = i;
-        graph[i][i] = 0;
-    }
 
-    for(int i=0; i<M; i++)
+    graph = vector<vector<int>>(N+1, vector<int>(N+1, INF));
+    parent = vector<int>(N+1);
+    for (int i=1; i<=N; i++)
+        parent[i] = i;
+    
+    for (int i=0; i<M; i++)
     {
-        int u, v;
+        int u,v;
         cin >> u >> v;
         graph[u][v] = graph[v][u] = 1;
         Union(u,v);
@@ -56,51 +55,53 @@ int main()
     {
         group[Find(i)].push_back(i);
     }
-    
+
     for (int k=1; k<=N; k++)
     {
         for (int i=1; i<=N; i++)
         {
             for (int j=1; j<=N; j++)
             {
-                if (graph[i][k] == INF) continue;
                 if (graph[i][j] > graph[i][k] + graph[k][j])
                     graph[i][j] = graph[i][k] + graph[k][j];
             }
         }
-        
     }
-    
-    cout << group.size() << "\n";
-    vector<int> ans;
+
+    set<int> ans;
+
     for (auto g : group)
     {
-        auto& key = g.first;
-        auto& val = g.second;
-        int best_dist = INF;
+        auto key = g.first;
+        auto& vec = g.second;
+
         int rep = -1;
-        for (auto from : val)
+        int best = INF;
+
+        for (auto from : vec)
         {
-            int maxdist = 0;
-            for (auto to : val)
+            int max_dist = -1;
+            for (auto to : vec)
             {
                 if (from == to) continue;
-                maxdist = max(maxdist, graph[from][to]);
+                max_dist = max(max_dist, graph[from][to]);
             }
 
-            if (maxdist < best_dist)
+            if (best > max_dist)
             {
-                best_dist = maxdist;
+                best = max_dist;
                 rep = from;
             }
         }
-        
-       ans.push_back(rep);
+        ans.insert(rep);
     }
+
+    cout << ans.size() << "\n";
     
-    sort(ans.begin(), ans.end());
-    for (auto e : ans)
-        cout << e << "\n";
+    for (auto& e : ans)
+    {
+        cout << e << endl;
+    }
 
     return 0;
 }
