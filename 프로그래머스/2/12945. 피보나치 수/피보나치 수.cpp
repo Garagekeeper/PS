@@ -109,5 +109,5 @@ int Fibo4(int n)
 int solution(int n) 
 {
     cache.resize(n+1);
-    return Fibo(n);
+    return Fibo4(n);
 }
