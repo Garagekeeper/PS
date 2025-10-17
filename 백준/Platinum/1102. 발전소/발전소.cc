@@ -38,7 +38,7 @@ int dfs(int mask)
         for (int j=0; j<N; j++)
         {
             if (mask & (1 << j)) continue;
-            cost[mask] = min(dfs(mask), dfs(mask | ( 1 << j )) + graph[i][j]);
+            cost[mask] = min(cost[mask], dfs(mask | ( 1 << j )) + graph[i][j]);
         }
     }
 
