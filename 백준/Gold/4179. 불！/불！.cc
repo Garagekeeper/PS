@@ -27,7 +27,7 @@ struct Cell
     }
 };
 
-short graph[1000][1000];
+char graph[1000][1000];
 bool visited[1000][1000];
 
 vector<Cell> fireVec;
@@ -48,7 +48,9 @@ bool CanGo(Cell next)
     if (visited[next.x][next.y]) return false;
     if (graph[next.x][next.y] == CellType::WALL) return false;
     if (graph[next.x][next.y] == CellType::FIRE) return false;
-
+    if (graph[next.x][next.y] != CellType::NONE && next.type == CellType::FIRE)
+        graph[next.x][next.y] = CellType::FIRE;
+    
     return true;
 }
 
@@ -58,18 +60,22 @@ int BFS(Cell start)
     Cell curr;
     bool isEscape = false;
 
+    // 불이 있는 칸 큐에 넣기
     for (auto c : fireVec)
     {
         q.push(c);
         visited[c.x][c.y] = true;
     }
-
+    
+    // 지훈이 위치 넣기
     q.push(start);
     visited[start.x][start.y];
 
+    // BFS
     while(!q.empty())
     {
         curr = q.front(); q.pop();
+        // 지훈이가 가장자리에 가면 탈출
         if (curr.type == CellType::JIHOON)
         {
             if (curr.x == 0 || curr.x == R-1 || curr.y == 0 || curr.y == C-1)
@@ -79,23 +85,20 @@ int BFS(Cell start)
             }
         }
 
+        // D R U L 방향으로 탐색
         for (auto c : dirVec)
         {
             Cell nextCell = curr + c;
             if (CanGo(nextCell))
             {
-                if (nextCell.type == CellType::JIHOON)
-                    visited[nextCell.x][nextCell.y] = true;
-                else if (nextCell.type == CellType::FIRE)
-                {
-                    graph[nextCell.x][nextCell.y] = CellType::FIRE;
-                }
-                
+                // 지훈, 불 상관없이 방문처리
+                visited[nextCell.x][nextCell.y] = true;
                 q.push(nextCell);
             }
         }
     }
 
+    // 탈출했으면 지훈의 cnt를 반환
     if (isEscape)
         return curr.cnt;
     
@@ -109,27 +112,21 @@ int main()
    
     cin >> R >> C;
     Cell jihoon;
+    
+    // 입력
     for (int i=0; i<R; i++)
     {
         string row;
         cin >> row;
         for (int j=0; j<C; j++)
         {
-            int type;
+            int type = 0;
             if (row[j] == '#')
                 type = CellType::WALL;
-            else if (row[j] == '.')
-                type = CellType::NONE;
             else if (row[j] == 'J')
-            {
                 jihoon = {i,j,1,CellType::JIHOON};
-                type = CellType::NONE;
-            }
             else if (row[j] == 'F')
-            {
-                fireVec.push_back({i,j,0,CellType::FIRE});
-                type = CellType::FIRE;
-            }
+                fireVec.push_back({i,j,0});
 
             graph[i][j] = type;
         }
