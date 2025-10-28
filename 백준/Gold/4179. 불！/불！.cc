@@ -1,0 +1,145 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <queue>
+using namespace std;
+enum CellType
+{
+    NONE = 0,
+    WALL,
+    FIRE,
+    JIHOON,
+};
+
+struct Cell
+{
+    int x;
+    int y;
+    int cnt;
+    int type;
+
+    Cell operator+(const Cell& other)
+    {
+        int nx = x + other.x;
+        int ny = y + other.y;
+
+        return {nx, ny, cnt+1, type};
+    }
+};
+
+short graph[1000][1000];
+bool visited[1000][1000];
+
+vector<Cell> fireVec;
+vector<Cell> dirVec={
+    {1,0,0,0},
+    {0,1,0,0},
+    {-1,0,0,0},
+    {0,-1,0,0},
+};
+
+Cell startCell;
+int R,C;
+
+bool CanGo(Cell next)
+{
+    if (next.x < 0 || next.x >= R) return false;
+    if (next.y < 0 || next.y >= C) return false;
+    if (visited[next.x][next.y]) return false;
+    if (graph[next.x][next.y] == CellType::WALL) return false;
+    if (graph[next.x][next.y] == CellType::FIRE) return false;
+
+    return true;
+}
+
+int BFS(Cell start)
+{
+    queue<Cell> q;
+    Cell curr;
+    bool isEscape = false;
+
+    for (auto c : fireVec)
+    {
+        q.push(c);
+        visited[c.x][c.y] = true;
+    }
+
+    q.push(start);
+    visited[start.x][start.y];
+
+    while(!q.empty())
+    {
+        curr = q.front(); q.pop();
+        if (curr.type == CellType::JIHOON)
+        {
+            if (curr.x == 0 || curr.x == R-1 || curr.y == 0 || curr.y == C-1)
+            {
+                isEscape = true;
+                break;
+            }
+        }
+
+        for (auto c : dirVec)
+        {
+            Cell nextCell = curr + c;
+            if (CanGo(nextCell))
+            {
+                if (nextCell.type == CellType::JIHOON)
+                    visited[nextCell.x][nextCell.y] = true;
+                else if (nextCell.type == CellType::FIRE)
+                {
+                    graph[nextCell.x][nextCell.y] = CellType::FIRE;
+                }
+                
+                q.push(nextCell);
+            }
+        }
+    }
+
+    if (isEscape)
+        return curr.cnt;
+    
+    return -1;
+}
+
+int main()
+{
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+   
+    cin >> R >> C;
+    Cell jihoon;
+    for (int i=0; i<R; i++)
+    {
+        string row;
+        cin >> row;
+        for (int j=0; j<C; j++)
+        {
+            int type;
+            if (row[j] == '#')
+                type = CellType::WALL;
+            else if (row[j] == '.')
+                type = CellType::NONE;
+            else if (row[j] == 'J')
+            {
+                jihoon = {i,j,1,CellType::JIHOON};
+                type = CellType::NONE;
+            }
+            else if (row[j] == 'F')
+            {
+                fireVec.push_back({i,j,0,CellType::FIRE});
+                type = CellType::FIRE;
+            }
+
+            graph[i][j] = type;
+        }
+    }
+
+    auto res = BFS(jihoon);
+    if (res == -1)
+        cout << "IMPOSSIBLE";
+    else
+        cout << res;
+
+    return 0;
+}
