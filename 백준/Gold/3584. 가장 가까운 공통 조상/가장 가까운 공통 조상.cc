@@ -13,40 +13,43 @@ int Solution(int a, int b)
     int currA = a;
     int currB = b;
 
-    vector<int> parA;
-    unordered_set<int> parB;
+    vector<int> parentAvec;
+    unordered_set<int> parBuset;
 
-    parA.push_back(a);
-    parB.insert(b);
+    parentAvec.push_back(a);
+    parBuset.insert(b);
+    
+    // A부터 root까지의 노드를 담는다.
     while (true)
     {
         if (parent[currA] == currA) break;
-        parA.push_back(parent[currA]);
+        parentAvec.push_back(parent[currA]);
         currA = parent[currA];
     }
 
+    // B부터 root까지의 노드를 해시셋에 담는다.
     while (true)
     {
         if (parent[currB] == currB) break;
-        parB.insert(parent[currB]);
+        parBuset.insert(parent[currB]);
         currB = parent[currB];
     }
 
-    for (auto e : parA)
+    // A부터 위로 올라가면서 B의 부모 목록에 있는지 확인하고
+    // 있으면 반환.
+    for (auto e : parentAvec)
     {
-        if (parB.find(e) != parB.end())
+        if (parBuset.find(e) != parBuset.end())
             return e;
     }
-
-    int res = 0;
 
     return -1;
 }
 
 int main()
 {
-    //ios_base::sync_with_stdio(0);
-    //cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
 
     cin >> T;
     while(T--)
@@ -61,7 +64,6 @@ int main()
         {
             int p, c;
             cin >> p >> c;
-
             parent[c] = p;
         }
 
