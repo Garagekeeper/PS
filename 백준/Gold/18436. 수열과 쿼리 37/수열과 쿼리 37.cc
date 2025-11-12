@@ -41,7 +41,7 @@ int main()
     {
         int inval;
         cin >> inval;
-        if (inval % 2 != 0)
+        if (inval & 1)
         {
             seqArr[i] = 1;
             UpdateTree(1,1,N,i,1); 
@@ -57,13 +57,13 @@ int main()
         if (cmd == 1)
         {
             cin >> a >> b;
-            if (seqArr[a] == 0 && b % 2 != 0)
+            if (seqArr[a] == 0 && b & 1)
             {
                 seqArr[a] = 1;
                 UpdateTree(1,1,N,a,1); 
             }
 
-            else if (seqArr[a] == 1 && b % 2 == 0)
+            else if (seqArr[a] == 1 && !(b & 1))
             {
                 seqArr[a] = 0;
                 UpdateTree(1,1,N,a,-1); 
